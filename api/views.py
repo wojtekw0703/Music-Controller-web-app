@@ -28,6 +28,7 @@ class  CreateRoomView(APIView):
                 room.guest_can_ause = guest_can_ause
                 room.votes_to_skip = votes_to_skip
                 room.save(update_fields=['guest_can_ause', 'votes_to_skip'])
+                return Response(RoomSerializer(room).data, status=status.HTTP_200_OK)
             else:
                 room = Room(host=host, guest_can_ause=guest_can_ause, votes_to_skip=votes_to_skip)
                 room.save()
