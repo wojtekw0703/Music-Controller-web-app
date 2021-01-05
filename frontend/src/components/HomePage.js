@@ -11,6 +11,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Room from "./Room";
 
 export default class HomePage extends Component {
     constructor(props)
@@ -23,6 +24,7 @@ export default class HomePage extends Component {
                 <Route exact path = '/'><p>This is the Home Page</p></Route>
                 <Route path = '/join' component={RoomJoinPage}></Route>
                 <Route path = '/create' component={CreateRoomPage}></Route>
+                <Route path = '/room/:roomCode' component={Room}></Route>
             </Switch>
         </Router> );
      
