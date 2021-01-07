@@ -2,32 +2,62 @@ import React, { Component } from 'react';
 import RoomJoinPage from './RoomJoinPage';
 import CreateRoomPage from './CreateRoomPage';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect} from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Room from "./Room";
+import Room from './Room';
+import { Grid, Button, ButtonGroup, Typography } from "@material-ui/core";
 
 export default class HomePage extends Component {
     constructor(props)
     {
         super(props);
+        this.state={
+            roomCode: null,
+        };
     }
+
+async componentDidMount() {
+    fetch("/api/user-in-room").then((response)=> response.json()).then((data)=>{
+        this.setState({
+            roomCode: data.code,
+        });
+    });
+}
+
+renderHomePage()
+{
+    return (
+        <Grid container spacing={3}>
+            <Grid item xs={12} align="center">
+                <Typography variant="h3" compact="h3">
+                    House party
+                </Typography>
+            </Grid>
+            <Grid item xs={12} align="center">
+                <ButtonGroup disableElevation variant="contained" color="primary">
+                    <Button color="primary" to="/join" component={ Link }>Join a room</Button>
+                    <Button color="secondary" to="/create" component={ Link }>Create a room</Button>
+                </ButtonGroup>
+            </Grid>
+        </Grid>
+        );
+}
+
     render() {
         return (<Router>
             <Switch>
-                <Route exact path = '/'><p>This is the Home Page</p></Route>
-                <Route path = '/join' component={RoomJoinPage}></Route>
-                <Route path = '/create' component={CreateRoomPage}></Route>
-                <Route path = '/room/:roomCode' component={Room}></Route>
-            </Switch>
-        </Router> );
-     
-        }
+                <Route exactpath="/"
+            render={() => {
+              return this.state.roomCode ? (
+                <Redirect to={`/room/${this.state.roomCode}`} />
+              ) : (
+                this.renderHomePage()
+              );
+            }}
+          />
+          <Route path="/join" component={RoomJoinPage} />
+          <Route path="/create" component={CreateRoomPage} />
+          <Route path="/room/:roomCode" component={Room} />
+        </Switch>
+      </Router>
+    );
+  }
 }
- 

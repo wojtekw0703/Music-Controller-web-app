@@ -6,9 +6,9 @@ export default class RoomJoinPage extends Component {
     constructor(props)
     {
         super(props);
-        this.state={
+        this.state = {
             roomCode:"",
-            error:""
+            error:"",
         };
         this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
         this.roomButtonPressed = this.roomButtonPressed.bind(this);
@@ -55,7 +55,7 @@ export default class RoomJoinPage extends Component {
            fetch('/api/join-room', reqestOptions).then((response)=>{
                if(response.ok)
                {
-                   this.props.history.push(`/room/${this.state.roomCode}`)
+                   this.props.history.push(`/room/${this.state.roomCode}`);
                } else {
                    this.setState({error:"Room not found"})
                }
