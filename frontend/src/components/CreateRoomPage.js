@@ -12,13 +12,19 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 
 export default class CreateRoomPage extends Component {
-    defaultVotes = 2;
+  static defaultProps = {
+    votesToSkip:2,
+    guestCanPause: true,
+    update: false,
+    roomCode:null,
+    updateCallback: () =>{},
+  };
     constructor(props)
     {
         super(props);
         this.state = {
-            guestCanPause: true,
-            votesToSkip: this.defaultVotes,
+            guestCanPause: this.props.guestCanPause,
+            votesToSkip: this.props.votesToSkip,
         };
         this.handleRoomButtonPressed = this.handleRoomButtonPressed.bind(this);
         this.handleVotesChange = this.handleVotesChange.bind(this);
@@ -52,10 +58,11 @@ export default class CreateRoomPage extends Component {
       }
 
     render() {
+        const title = this.props.update ? "Update room" : "Create a room";
         return <Grid container spacing={1}>
             <Grid item xs={12} align="center">
                 <Typography component="h4" variant="h4">
-                    Create a Room
+                   {title}
                 </Typography>
             </Grid>
             <Grid item xs={12} align="center">
@@ -81,7 +88,7 @@ export default class CreateRoomPage extends Component {
             <Grid item xs={12} align="center">
                 <FormControl>
                     <TextField 
-                    required={true} type="number" onChange={this.handleVotesChange} defaultValue={this.defaultVotes}
+                    required={true} type="number" onChange={this.handleVotesChange} defaultValue={this.state.votesToSkip}
                     inputProps={{
                         min:1,
                         style: { textAlign: "center" },
